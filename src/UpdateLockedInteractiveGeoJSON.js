@@ -1,25 +1,52 @@
 import React, { useState, useCallback, useEffect } from "react";
 import InteractiveGeoJSON from "./InteractiveGeoJSON";
 
-const UpdateLockedInteractiveGeoJSON = ({ onChangeEnd, ...restProps }) => {
-  const [restPropsLocal, setRestPropsLocal] = useState(restProps);
+const UpdateLockedInteractiveGeoJSON = ({
+  onChangeStart,
+  onChangeEnd,
+  geoJSON,
+  ...rest
+}) => {
+  const [geoJSONLocal, setGeoJSONLocal] = useState(null);
   const [changeEndGeoJSON, setChangeEndGeoJSON] = useState(null);
+  const [changeStartGeoJSON, setChangeStartGeoJSON] = useState(null);
+
+  useEffect(() => {
+    if (!changeStartGeoJSON) {
+      setGeoJSONLocal(geoJSON);
+    }
+  }, [changeStartGeoJSON, geoJSON]);
+
   useEffect(() => {
     if (changeEndGeoJSON) {
       onChangeEnd(changeEndGeoJSON);
+      setChangeStartGeoJSON(null);
+      setChangeEndGeoJSON(null);
     }
   }, [changeEndGeoJSON, onChangeEnd]);
 
-  const handleChangeEnd = useCallback(
-    (geoJSON) => {
-      setRestPropsLocal({ ...restPropsLocal, geoJSON });
-      setChangeEndGeoJSON(geoJSON);
-    },
-    [restPropsLocal]
-  );
+  useEffect(() => {
+    if (changeStartGeoJSON) {
+      onChangeStart(changeStartGeoJSON);
+    }
+  }, [changeStartGeoJSON, onChangeStart]);
+
+  const handleChangeEnd = useCallback((geoJSON) => {
+    setGeoJSONLocal(geoJSON);
+    setChangeEndGeoJSON(geoJSON);
+  }, []);
+
+  const handleChangeStart = useCallback((geoJSON) => {
+    setChangeStartGeoJSON(geoJSON);
+  }, []);
 
   return (
-    <InteractiveGeoJSON {...restPropsLocal} onChangeEnd={handleChangeEnd} />
+    <InteractiveGeoJSON
+      {...rest}
+      geoJSON={geoJSONLocal}
+      onChangeEnd={handleChangeEnd}
+      onChangeStart={handleChangeStart}
+    />
   );
 };
 

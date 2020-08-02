@@ -27,14 +27,28 @@ export default () => {
   const [lat] = useState(48.99);
   const [zoom] = useState(5);
   const [geoJSON, setGeoJSON] = useState(geoJSONInit);
+  const [dx, setDX] = useState(0);
+  const [dy, setDY] = useState(0);
   const mapRef = useRef();
 
-  const handleChangeEnd = useCallback((geoJSON) => {}, []);
+  const handleChangeEnd = useCallback(
+    (gj) => {
+      if (Math.abs(dx) > 80 || Math.abs(dy) > 80) {
+        setGeoJSON(geoJSON);
+      } else {
+        setGeoJSON(gj);
+      }
+      setDX(0);
+      setDY(0);
+    },
+    [dx, dy, geoJSON]
+  );
 
   const handleChangeStart = useCallback((geoJSON) => {}, []);
 
   const handleChange = useCallback((geoJSON, dydx) => {
-    console.log("dy dx", dydx);
+    setDX(dydx.dx);
+    setDY(dydx.dy);
     setGeoJSON(geoJSON);
   }, []);
 
@@ -46,6 +60,9 @@ export default () => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <UpdateLockedInteractiveGeoJSON
+        style={{
+          color: Math.abs(dx) > 80 || Math.abs(dy) > 80 ? "#FF0000" : "#0000FF",
+        }}
         geoJSON={geoJSON}
         onChangeStart={handleChangeStart}
         onChange={handleChange}

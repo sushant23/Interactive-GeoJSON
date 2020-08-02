@@ -14,6 +14,7 @@ const InteractiveGeoJSON = ({
   onChangeEnd,
   geoJSON,
   children,
+  style,
 }) => {
   const { map } = useLeaflet();
   const [layer, setLayer] = useState(null);
@@ -43,6 +44,12 @@ const InteractiveGeoJSON = ({
       map.removeLayer(l);
     };
   }, [geoJSON, map]);
+
+  useEffect(() => {
+    if (!layer) return;
+    layer.setStyle(style);
+  }, [layer, style]);
+
   return layer
     ? Children.map(
         children,
