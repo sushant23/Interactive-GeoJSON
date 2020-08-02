@@ -3,6 +3,20 @@ import { useEffect } from "react";
 
 const geoJSONFromParams = (params) => params.target.toGeoJSON();
 
+const dxdyFromParams = (params) => {
+  const matrix = params.target.dragging._matrix;
+  const dx = matrix[4];
+  const dy = matrix[5];
+  return { dx, dy };
+};
+
+const getTranslatedGeoJSONFromParams = (params) => {
+  const geoJSON = geoJSONFromParams(params);
+  const { dx, dy } = dxdyFromParams(params);
+  //TODO implement this functions
+  return geoJSON;
+};
+
 const Draggable = ({ layer, onChange, onChangeEnd, onChangeStart }) => {
   useEffect(() => {
     layer.getLayers().forEach((l) => {
@@ -24,7 +38,7 @@ const Draggable = ({ layer, onChange, onChangeEnd, onChangeStart }) => {
     };
 
     const handleChange = (params) => {
-      onChange(geoJSONFromParams(params));
+      onChange(getTranslatedGeoJSONFromParams(params), dxdyFromParams(params));
     };
     layer.eachLayer((_layer) => {
       _layer.on("dragstart", handleChangeStart);

@@ -29,17 +29,13 @@ export default () => {
   const [geoJSON, setGeoJSON] = useState(geoJSONInit);
   const mapRef = useRef();
 
-  const handleChangeEnd = useCallback((geoJSON) => {
-    console.log("change end", geoJSON);
-  }, []);
+  const handleChangeEnd = useCallback((geoJSON) => {}, []);
 
-  const handleChangeStart = useCallback((geoJSON) => {
-    console.log("change start", geoJSON);
-  }, []);
+  const handleChangeStart = useCallback((geoJSON) => {}, []);
 
-  const handleChange = useCallback((geoJSON) => {
+  const handleChange = useCallback((geoJSON, dydx) => {
+    console.log("dy dx", dydx);
     setGeoJSON(geoJSON);
-    console.log("change", JSON.stringify(geoJSON));
   }, []);
 
   const position = [lat, lng];
