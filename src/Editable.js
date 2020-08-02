@@ -1,30 +1,32 @@
-import '@geoman-io/leaflet-geoman-free';
-import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css';
-import { useEffect } from 'react';
+import "@geoman-io/leaflet-geoman-free";
+import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
+import { useEffect } from "react";
 
-const Editable = ({layer, onChangeEnd}) => {
-    useEffect(() => {
-        layer.pm.enable({
-            allowSelfIntersection: true,
-            snappable: false,
-        }); 
+const Editable = ({ layer, changing, onChangeEnd }) => {
+  useEffect(() => {
+    if (!changing) {
+      layer.pm.enable({
+        allowSelfIntersection: true,
+        snappable: false,
+      });
+    }
 
-        return () => {
-            layer.pm.disable()
-        }
-    }, [layer])
+    return () => {
+      layer.pm.disable();
+    };
+  }, [layer, changing]);
 
-    useEffect(() => {
-        layer.on('pm:markerdragend', ev => {
-            onChangeEnd(ev.target.toGeoJSON().features[0]);
-          });
-        
-          layer.on('pm:vertexremoved', ev => {
-            onChangeEnd(ev.target.toGeoJSON().features[0]);
-          });
-    }, [layer, onChangeEnd])
+  useEffect(() => {
+    layer.on("pm:markerdragend", (ev) => {
+      onChangeEnd(ev.target.toGeoJSON().features[0]);
+    });
 
-    return null
-}
+    layer.on("pm:vertexremoved", (ev) => {
+      onChangeEnd(ev.target.toGeoJSON().features[0]);
+    });
+  }, [layer, onChangeEnd]);
 
-export default Editable
+  return null;
+};
+
+export default Editable;
