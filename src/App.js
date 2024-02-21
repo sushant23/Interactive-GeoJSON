@@ -2,7 +2,7 @@ import React, { useState, useCallback, useRef } from "react";
 import { Map, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "./App.css";
-import Editable from "./Editable";
+// import Editable from "./Editable";
 import Draggable from "./Draggable";
 import UpdateLockedInteractiveGeoJSON from "./UpdateLockedInteractiveGeoJSON";
 const geoJSONInit = {
@@ -68,7 +68,7 @@ export default () => {
         onChange={handleChange}
         onChangeEnd={handleChangeEnd}
       >
-        <Editable />
+        {/* <Editable /> */}
         <Draggable />
       </UpdateLockedInteractiveGeoJSON>
     </Map>
