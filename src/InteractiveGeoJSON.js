@@ -38,7 +38,16 @@ const InteractiveGeoJSON = ({
     [onChangeEnd]
   );
   useEffect(() => {
-    const l = L.geoJSON(geoJSON).addTo(map);
+    if (!geoJSON) return;
+    console.log({ geoJSON });
+    const positions = geoJSON.geometry.coordinates[0].map((coord) => ({
+      lat: coord[1],
+      lng: coord[0],
+    }));
+    const l = new L.Polygon(positions, {
+      draggable: true,
+      contextmenu: true,
+    }).addTo(map);
     setLayer(l);
     return () => {
       map.removeLayer(l);

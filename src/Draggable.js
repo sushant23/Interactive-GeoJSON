@@ -12,20 +12,20 @@ const dxdyFromParams = (params) => {
 
 const getTranslatedGeoJSONFromParams = (params) => {
   const geoJSON = geoJSONFromParams(params);
-  const { dx, dy } = dxdyFromParams(params);
   //TODO implement this functions
   return geoJSON;
 };
 
 const Draggable = ({ layer, onChange, onChangeEnd, onChangeStart }) => {
   useEffect(() => {
-    layer.getLayers().forEach((l) => {
-      l.makeDraggable();
-      l.dragging.enable();
-    });
-
+    if (!layer) {
+      return () => {};
+    }
+    layer.dragging.enable();
+    // layer._path.style.cursor = "move";
     return () => {
-      layer.getLayers().forEach((l) => l.dragging.disable());
+      // layer._path.style.cursor = "inherit";
+      layer.dragging.disable();
     };
   }, [layer]);
 
@@ -40,18 +40,14 @@ const Draggable = ({ layer, onChange, onChangeEnd, onChangeStart }) => {
     const handleChange = (params) => {
       onChange(getTranslatedGeoJSONFromParams(params), dxdyFromParams(params));
     };
-    layer.eachLayer((_layer) => {
-      _layer.on("dragstart", handleChangeStart);
-      _layer.on("drag", handleChange);
-      _layer.on("dragend", handleDragEnd);
-    });
+    layer.on("dragstart", handleChangeStart);
+    layer.on("drag", handleChange);
+    layer.on("dragend", handleDragEnd);
 
     return () => {
-      layer.eachLayer((_layer) => {
-        _layer.off("dragstart", handleChangeStart);
-        _layer.off("drag", handleChange);
-        _layer.off("dragend", handleDragEnd);
-      });
+      layer.off("dragstart", handleChangeStart);
+      layer.off("drag", handleChange);
+      layer.off("dragend", handleDragEnd);
     };
   }, [layer, onChange, onChangeEnd, onChangeStart]);
 
