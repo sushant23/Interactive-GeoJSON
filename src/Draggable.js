@@ -21,11 +21,11 @@ const Draggable = ({ layer, onChange, onChangeEnd, onChangeStart }) => {
     if (!layer) {
       return () => {};
     }
-    layer.dragging.enable();
+    // layer.dragging.enable();
     // layer._path.style.cursor = "move";
     return () => {
       // layer._path.style.cursor = "inherit";
-      layer.dragging.disable();
+      // layer.dragging.disable();
     };
   }, [layer]);
 

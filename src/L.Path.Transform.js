@@ -236,6 +236,7 @@ L.Path.prototype.makeDraggable = function () {
   return L.Handler.PathDrag.makeDraggable(this);
 };
 L.Path.addInitHook(function () {
+  console.log({ options: this.options });
   if (this.options.draggable) {
     this.options.interactive = true;
     if (this.dragging) {

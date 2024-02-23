@@ -6,7 +6,7 @@ import {
   useCallback,
 } from "react";
 import L from "leaflet";
-import { useLeaflet } from "react-leaflet";
+import { useMap } from "react-leaflet";
 
 const InteractiveGeoJSON = ({
   onChangeStart,
@@ -16,7 +16,7 @@ const InteractiveGeoJSON = ({
   children,
   style,
 }) => {
-  const { map } = useLeaflet();
+  const map = useMap();
   const [layer, setLayer] = useState(null);
   const [changeStartGeoJSON, setChangeStartGeoJSON] = useState(null);
 

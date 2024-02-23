@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef } from "react";
-import { Map, TileLayer } from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "./App.css";
 // import Editable from "./Editable";
@@ -54,7 +54,7 @@ export default () => {
 
   const position = [lat, lng];
   return (
-    <Map center={position} zoom={zoom} ref={mapRef}>
+    <MapContainer center={position} zoom={zoom} ref={mapRef}>
       <TileLayer
         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -71,6 +71,6 @@ export default () => {
         {/* <Editable /> */}
         <Draggable />
       </UpdateLockedInteractiveGeoJSON>
-    </Map>
+    </MapContainer>
   );
 };
